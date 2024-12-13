@@ -6,8 +6,8 @@ const btnClear = document.querySelector("#container-clear");
 const entry = document.querySelector("input");
 const equal = document.querySelector("#container-equal");
 
-let n1;
-let n2;
+let n1 = 0;
+let n2 = 0;
 let op;
 let result;
 
@@ -22,6 +22,8 @@ function clearInput() {
 function operate() {
   clearInput();
   switch (op) {
+    case "+/-":
+      return n1 * -1;
     case "+":
       return n1 + n2;
     case "-":
@@ -29,7 +31,10 @@ function operate() {
     case "*":
       return n1 * n2;
     case "/":
+      if (n1 / n2 === Infinity) return "Error: Division by cero";
       return n1 / n2;
+    default:
+      return "";
   }
 }
 
@@ -45,16 +50,15 @@ btnClear.addEventListener("click", () => {
 
 btnOperations.forEach((element) => {
   element.addEventListener("click", () => {
-    setInput(element.innerText);
+    op = element.innerText;
+    if (entry.value !== "") n1 = parseInt(entry.value);
+    clearInput();
   });
 });
 
 equal.addEventListener("click", () => {
-  let expresion = entry.value;
-  [n1, n2] = expresion.split(/[+-\/\*]/);
-  n1 = parseInt(n1);
-  n2 = parseInt(n2);
-  op = Array.from(expresion.split(/[0-9]/)).join("");
+  if (entry.value !== "") n2 = parseInt(entry.value);
+  console.log(n1, n2);
   result = operate();
   setInput(result);
 });
